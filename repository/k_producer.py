@@ -12,10 +12,13 @@ producer = Producer(producer_config)
 
 queue_topic = 'customer' # kafka queue name
 
-def add_item_to_queue(item_data):
+def add_item_to_queue(item_data, operation):
 
     try:
+        item_data['operation'] = operation
         item_data_json = json.dumps(item_data)
+        print("\n\n", item_data_json)
+        # item_data_json
         # item_data_json['internal_update'] = True
         producer.produce(queue_topic, key=None, value=item_data_json)
         producer.poll(0)

@@ -22,10 +22,22 @@ async def all(fdata : schemas.formData, db : Session = Depends(get_db)):
 
     if q1 is not None:
         item_data = dict(fdata)
-        k_producer.add_item_to_queue(item_data)
+        k_producer.add_item_to_queue(item_data, "update")
         return JSONResponse(content={"message": "Customer Catalog Updated Successfully!"}, status_code=200)
 
     return HTTPException(status_code=404, detail= f"Customer with id : {fdata.id} not found!")
+
+@router.post('/outward_sync/add', status_code = status.HTTP_200_OK, tags = ['outward_sync'])
+async def all(fdata : schemas.addFormData, db : Session = Depends(get_db)):
+    q1 = outward.check_user(db, fdata.email)
+    print(q1)
+    if q1 is None:
+        item_data = dict(fdata)
+        k_producer.add_item_to_queue(item_data, "add")
+        return JSONResponse(content={"message": "Customer Catalog Updated Successfully!"}, status_code=200)
+
+    return HTTPException(status_code=404, detail= f"Customer with email : {fdata.email} already exists!")
+
 
 @router.post("/inward_sync/update",status_code = status.HTTP_200_OK ,tags = ['inward_sync'])
 async def stripe_webhook(event: dict, db : Session = Depends(get_db)):
@@ -47,6 +59,30 @@ async def stripe_webhook(event: dict, db : Session = Depends(get_db)):
 
         except Exception as e:
             return HTTPException(status_code=500, detail=str(e))
+
+
+
+@router.post("/inward_sync/add",status_code = status.HTTP_200_OK ,tags = ['inward_sync'])
+async def stripe_webhook(event: dict, db : Session = Depends(get_db)):
+        try:
+            if event['type'] == 'customer.created':
+
+                customer = event['data']['object']
+              
+                resp = inward.add_customer_to_local_catalog(customer, db)
+
+                if resp:
+                    return JSONResponse(content={"message": "Event received and processed!"}, status_code=200)
+                
+                else:
+                    return JSONResponse(content={"message": "Cannot find Customer with submitted email!"}, status_code=404)
+            
+            else:
+                return JSONResponse(content={"message": "Invalid Event!"}, status_code=404)
+
+        except Exception as e:
+            return HTTPException(status_code=500, detail=str(e))
+
 
   
 @router.post('/update_data', status_code = status.HTTP_200_OK ,tags = ['other'])
