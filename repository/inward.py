@@ -26,3 +26,13 @@ def add_customer_to_local_catalog(customer, db : Session):
         return {"message" : "Added New Stripe's Customer!"}
 
     return None
+
+def delete_customer_to_local_catalog(customer, db : Session): 
+    id_1 = db.query(models.customers).filter(models.customers.id == customer['id']).one_or_none()
+
+    if id_1 is not None:
+        q3 = db.query(models.customers).filter(models.customers.id == customer['id']).delete()
+        db.commit()
+        return {"message" : "Deleted Stripe's Customer!"}
+
+    return None

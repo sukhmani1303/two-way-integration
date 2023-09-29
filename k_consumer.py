@@ -86,6 +86,17 @@ def process_item(item_data):
                 q2 = outward.add(schemas.formData(id = res['id'], name = res['name'], email= res['email']))
                 print(q2)
                 return "User exists in stripe!"
+            
+        elif item_data['operation'] == "delete":
+            res = outward.search_stripe_id(item_data['id'],stripe.Customer.list())
+            print(res)
+            if res is not None:
+                stripe.Customer.delete(item_data['id'])
+                print("deleted from stripe!")
+            else:
+                print("doesn't exsist in stripe!")
+            
+            
 
     except Exception as e:
         print(f"Error processing item: {str(e)}")

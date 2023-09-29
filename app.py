@@ -67,6 +67,23 @@ def page1():
         else:
             st.error('Cannot add Customer!', icon="🚨")
 
+    
+    st.title("Delete DATA")
+    # if (st.button("ADD DATA", on_click = callback) or st.session_state.button_clicked):
+    id_main = st.text_input("Enter ID")
+
+    if (st.button("delete")):
+        api_url = "http://127.0.0.1:8080/outward_sync/delete" 
+
+        payload = {"id" : id_main}
+
+        response = requests.post(api_url, json=payload)
+
+        if response.status_code == 200:
+            st.success('Customer Deleted Successfully!', icon="✅")
+        else:
+            st.error('Cannot Delete Customer!', icon="🚨")
+
 
 if __name__ == "__main__":
     page1()

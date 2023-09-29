@@ -48,6 +48,20 @@ def add(fdata:schemas.addFormData):
         return None
 
 
+def delete(db:Session,fdata:schemas.lookup):
+
+    print("in function !!")
+
+    id_1 = db.query(models.customers).filter(models.customers.id == fdata.id).one_or_none()
+
+    if id_1 is not None:
+        q3 = db.query(models.customers).filter(models.customers.id == fdata.id).delete()
+        db.commit()
+        return q3
+    
+    return None
+
+
 def check_user(db : Session, email : str):
     user = db.query(models.customers).filter(models.customers.email == email).one_or_none()
     return user
@@ -56,5 +70,11 @@ def check_user(db : Session, email : str):
 def search_stripe(email : str, cust_list : list ):
     for cust in cust_list:
         if email == cust['email']:
+            return cust
+    return None
+
+def search_stripe_id(id : str, cust_list : list ):
+    for cust in cust_list:
+        if id == cust['id']:
             return cust
     return None
