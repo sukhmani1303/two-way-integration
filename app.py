@@ -5,7 +5,7 @@ def callback():
     st.session_state.button_clicked = True
 
 def page1():
-    st.title("Data Table")
+    st.title("Customer Catalog")
     if "button_clicked" not in st.session_state:    
         st.session_state.button_clicked = False
     
@@ -49,6 +49,23 @@ def page1():
                     st.success('Customer Catalog Updated Successfully!', icon="✅")
                 else:
                     st.error('Cannot Update Customer Catalog', icon="🚨")
+        
+    st.title("ADD DATA")
+    # if (st.button("ADD DATA", on_click = callback) or st.session_state.button_clicked):
+    name_main = st.text_input("Enter Name")
+    email_main = st.text_input("Enter Email")
+
+    if (st.button("Confirm")):
+        api_url = "http://127.0.0.1:8080/outward_sync/add" 
+
+        payload = {"name" : name_main, "email" : email_main}
+
+        response = requests.post(api_url, json=payload)
+
+        if response.status_code == 200:
+            st.success('Customer Added Successfully!', icon="✅")
+        else:
+            st.error('Cannot add Customer!', icon="🚨")
 
 
 if __name__ == "__main__":
