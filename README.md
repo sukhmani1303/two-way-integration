@@ -1,15 +1,5 @@
-
-<h1 align="center">
-ZENSKAR ASSIGNMENT  
-<h1>
-
-<p align="center">
-<img src="https://entrackr.com/storage/2022/10/Zenskar.jpg" width="700">
-</p>
-
-
 # Introduction
-#### The objective of this exercise is to simulate a product that you are building that has a simple customer catalog (think of it as a simple customer table) and build a two-way integration with a customer catalog in an external service - Stripe in this case. The two-way sync should be near real-time so that a customer added/edited on one system propagates to the other system within a few seconds. The goal is to build this in a way such that you can add other integrations with the customer catalog, and other integrations with other catalogs (like, say, an invoice catalog) in the future.
+#### The objective of this repo is to simulate a product that has a simple customer catalog (think of it as a simple customer table) and to build a two-way integration with a customer catalog in an external service - Stripe in this case. The two-way sync is real-time so that a customer added/edited on one system propagates to the other system within a few seconds.
 
 ---
 
@@ -17,7 +7,7 @@ ZENSKAR ASSIGNMENT
 ### Project Setup
 First, to clone this repository to your local machine run the following command in your git Bash
 ```
-git clone https://github.com/sukhmani1303/zenskar-assignment.git
+https://github.com/sukhmani1303/two-way-integration.git
 ```
 <i>make sure you clone it into an appropriate folder :)</i>
 
