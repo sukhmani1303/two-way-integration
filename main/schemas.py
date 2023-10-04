@@ -8,6 +8,13 @@ class formData(BaseModel):
     class Config():
         orm_mode = True
 
+class addFormData(BaseModel):
+    name: str
+    email: str
+    class Config():
+        orm_mode = True
+
+
 # Derived Schema to mark internal update
 class fValidData(formData):
     internal_update : bool
